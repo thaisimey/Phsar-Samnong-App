@@ -68,11 +68,16 @@ class _SearchViewState extends State<SearchView> {
                                                 MainAxisAlignment.center,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    value[position].nameEn,
-                                                    style: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 12),
+                                                  Container(
+                                                    width: MediaQuery.of(context).size.width / 1.5,
+                                                    child: Text(
+                                                      value[position].nameEn,
+                                                      style: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontSize: 12),
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                   Text(
                                                     "${value[position].prices[0].price} / ${value[position].prices[0].uom.nameEn} ",
