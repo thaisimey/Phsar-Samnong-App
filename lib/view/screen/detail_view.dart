@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
@@ -9,6 +10,12 @@ import 'package:phsar_samnong/model/detail/detail.dart';
 import 'package:phsar_samnong/model/product/item.dart';
 import 'package:phsar_samnong/repository/api_service.dart';
 import 'package:phsar_samnong/view/screen/search_view.dart';
+
+import '../../component/component_pro.dart';
+import '../../constant/app_dimen.dart';
+import '../../constant/app_dimen.dart';
+import '../../model/product/item.dart';
+import '../../repository/api_service.dart';
 
 class DetailView extends StatefulWidget {
   final Item item;
@@ -22,7 +29,9 @@ class DetailView extends StatefulWidget {
 class _DetailViewState extends State<DetailView> {
   int productID;
   Item item;
-  List<Detail> detailList = List();
+  // List<Detail> detailList = List();
+  List<Mobile> mobileList = List();
+  List<Item> relatedList = List();
 
   // Detail detail;
   String title;
@@ -34,6 +43,7 @@ class _DetailViewState extends State<DetailView> {
   String uom = "";
   int view = 0;
   String variation = "";
+
 
   var page;
 
@@ -47,6 +57,9 @@ class _DetailViewState extends State<DetailView> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var detail = await ApiService.getProductDetail(item.id);
       print("res detailResponse ${detail.itemImg}");
+
+      relatedList = await ApiService.getProductRelated(detail.id);
+
       setState(() {
         title = detail.nameEn;
         description = detail.descriptionEn;
@@ -57,6 +70,7 @@ class _DetailViewState extends State<DetailView> {
         uom = detail.prices[0].uom.nameEn;
         view = detail.viewCnt;
         variation = detail.prices[0].variation;
+        mobileList = detail.mobile;
       });
     });
   }
@@ -84,23 +98,21 @@ class _DetailViewState extends State<DetailView> {
               ),
               Image.asset(
                 "assets/images/home/flag/khmer@3x.png",
-                height: 100,
-                width: 40,
+
+                width: 25,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: AppDimen.value2),
                 child: Image.asset(
                   "assets/images/home/flag/chinese@3x.png",
-                  height: 100,
-                  width: 40,
+                  width: 25,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: AppDimen.value2),
                 child: Image.asset(
                   "assets/images/home/flag/united-kingdom@3x.png",
-                  height: 100,
-                  width: 40,
+                  width: 25,
                 ),
               ),
               Spacer(),
@@ -256,52 +268,59 @@ class _DetailViewState extends State<DetailView> {
                 SizedBox(
                   height: AppDimen.value6,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: AppDimen.value14),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Gallery",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                      // top: AppDimen.value14,
-                      left: AppDimen.value16,
-                      right: AppDimen.value16),
-                  width: MediaQuery.of(context).size.width,
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height / 4,
-                  child: Scrollbar(
-                    thickness: 2,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: gallery.length,
-                        itemBuilder: (context, position) {
-                          return Padding(
-                            padding: const EdgeInsets.all(18),
-                            child: Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: MediaQuery.of(context).size.height / 3,
-                                decoration: BoxDecoration(
-                                  borderRadius:
+
+                (gallery.isEmpty) ? SizedBox.shrink()
+                    : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: AppDimen.value14),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Gallery",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                        // top: AppDimen.value14,
+                          left: AppDimen.value16,
+                          right: AppDimen.value16),
+                      width: MediaQuery.of(context).size.width,
+                      child: Divider(
+                        thickness: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 4,
+                      child: Scrollbar(
+                        thickness: 2,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: gallery.length,
+                            itemBuilder: (context, position) {
+                              return Padding(
+                                padding: const EdgeInsets.all(18),
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width / 2,
+                                    height: MediaQuery.of(context).size.height / 3,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
                                       BorderRadius.all(Radius.circular(8)),
-                                  color: Colors.white,
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        "${Constant.baseURL}/${gallery[position]}"),
-                                  ),
-                                )),
-                          );
-                        }),
-                  ),
+                                      color: Colors.white,
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            "${Constant.baseURL}/${gallery[position]}"),
+                                      ),
+                                    )),
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
                 ),
+
                 Padding(
                   padding: const EdgeInsets.only(left: AppDimen.value14,top: AppDimen.value4),
                   child: Text(
@@ -387,7 +406,7 @@ class _DetailViewState extends State<DetailView> {
                                     )),
                                 child: Align(
                                     alignment: Alignment.center,
-                                    child: Text("${price.toString()} / $uom")),
+                                    child: Text("\$ ${price.toString()} / $uom")),
                               )
                             ],
                           ),
@@ -428,18 +447,117 @@ class _DetailViewState extends State<DetailView> {
                     ),
                   ),
                 ),
-                Text("Contact Information"),
+                Padding(
+                  padding: const EdgeInsets.only(left: AppDimen.value14,top: AppDimen.value12),
+                  child: Text("Contact Information",style: TextStyle(fontWeight: FontWeight.bold),),
+                ),
                 Container(
                   padding: EdgeInsets.only(
-                      top: AppDimen.value14,
+                      // top: AppDimen.value14,
                       left: AppDimen.value16,
                       right: AppDimen.value16),
                   width: MediaQuery.of(context).size.width,
                   child: Divider(
                     thickness: 1,
-                    color: Colors.black,
+                    color: Colors.grey,
                   ),
                 ),
+
+                Container(
+                  height: 60,
+                  child: ListView.builder(
+                    itemCount: mobileList.length,
+                      itemBuilder: (context,index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left:AppDimen.value16,bottom: AppDimen.value8),
+                          child: Row(
+                            children: [
+                              Text(mobileList[index].company.name),
+                              SizedBox(width: MediaQuery.of(context).size.width / 3,),
+                              Text(": ${mobileList[index].phone}"),
+
+                            ],
+                          ),
+                        );
+                      }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: AppDimen.value14),
+                  child: Text("Related product",style: TextStyle(fontWeight: FontWeight.bold),),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                    // top: AppDimen.value14,
+                      left: AppDimen.value16,
+                      right: AppDimen.value16),
+                  width: MediaQuery.of(context).size.width,
+                  child: Divider(
+                    thickness: 1,
+                    color: Colors.grey,
+                  ),
+                ),
+
+                // ComponentPro.itemList(relatedList,context),
+
+                Stack(
+                  children: [
+                    Container(
+                      height: 160,
+                      padding: EdgeInsets.only(left: 10),
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: relatedList.length,
+                          itemBuilder: (context,position) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: AppDimen.value4,
+                                  // right: AppDimen.value18,
+                                  // top: AppDimen.value18,
+                                  bottom: AppDimen.value20
+                              ),
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width / 4,
+                                    height: MediaQuery.of(context).size.height / 5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom:4.0),
+                                      child: Align(alignment:Alignment.bottomCenter,child: Text("\$ ${relatedList[position].prices[0].price.toString()}")),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                                      color: Colors.white,
+                                      image: DecorationImage(
+                                        image: NetworkImage("${Constant.baseURL}/${relatedList[position].itemImg}"),
+                                      ),
+                                    )),
+                              ),
+                            );
+
+                      }),
+                    ),
+                    Positioned(
+                      bottom: 80,
+                      right: 5,
+                      child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.black.withOpacity(0.2),
+                          ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: IconButton(icon: Icon(Icons.arrow_forward_ios_rounded,size: 14,color:Colors.black,),onPressed: () {
+
+                            },),
+                          )),
+                    ),
+                  ],
+                )
+
+
+
               ],
             ),
           ),

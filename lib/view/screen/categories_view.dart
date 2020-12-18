@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:phsar_samnong/constant/const.dart';
-import 'file:///D:/Flutter/phsar_samnong/lib/model/category/category.dart';
 import 'package:phsar_samnong/view_model/categories_view_model.dart';
 import 'package:provider/provider.dart';
+
+import '../../model/category/category.dart';
 
 class CategoriesView extends StatefulWidget {
   @override

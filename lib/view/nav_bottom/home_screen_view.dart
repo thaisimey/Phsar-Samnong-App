@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:phsar_samnong/component/component_pro.dart';
 import 'package:phsar_samnong/constant/const.dart';
-import 'file:///D:/Flutter/phsar_samnong/lib/model/category/category.dart';
 import 'package:phsar_samnong/view_model/categories_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../constant/app_color.dart';
+import '../../constant/app_color.dart';
+import '../../constant/app_dimen.dart';
+import '../../constant/app_dimen.dart';
+import '../../model/category/category.dart';
 import '../product_item_view.dart';
 
 class HomeScreenView extends StatefulWidget {
@@ -30,6 +35,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
           ComponentPro.tabBar(context),
           Expanded(
             child: Container(
+              color: HexColor(AppColor.background),
                 child: Builder(
                     builder: (BuildContext context) {
                       return Stack(
@@ -44,12 +50,16 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                       return Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(value[position].nameEn,style: TextStyle(color: Colors.black87),),
-                                              Spacer(),
-                                              Text("More")
-                                            ],
+                                          SizedBox(height: AppDimen.value4,),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left:AppDimen.value10,right: AppDimen.value10,bottom: AppDimen.value8),
+                                            child: Row(
+                                              children: [
+                                                Text(value[position].nameEn,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black87),),
+                                                Spacer(),
+                                                Text("More",style: TextStyle(fontWeight: FontWeight.bold,color: HexColor(AppColor.red.toString())),)
+                                              ],
+                                            ),
                                           ),
                                           ProductItemView(catID: value[position].id,)
                                         ],

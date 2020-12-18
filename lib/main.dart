@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'file:///D:/Flutter/phsar_samnong/lib/view/screen/categories_view.dart';
 import 'package:phsar_samnong/view/home_view.dart';
-import 'package:phsar_samnong/view/screen/detail_view.dart';
+import 'package:phsar_samnong/view/test_view.dart';
 import 'package:phsar_samnong/view_model/categories_view_model.dart';
 import 'package:phsar_samnong/view_model/product_detail_model_view.dart';
 import 'package:phsar_samnong/view_model/product_view_model.dart';
 import 'package:phsar_samnong/view_model/search_view_model.dart';
 import 'package:provider/provider.dart';
+
+import 'view/home_view.dart';
 
 void main() {
   runApp(MultiProvider(

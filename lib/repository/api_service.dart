@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:phsar_samnong/model/detail/detail.dart';
-import 'file:///D:/Flutter/phsar_samnong/lib/model/category/category.dart';
 import 'package:phsar_samnong/model/product/item.dart';
 import 'package:phsar_samnong/repository/http_client.dart';
+
+import '../model/category/category.dart';
 
 class ApiService {
   static Dio _dio = Dio();
@@ -82,6 +83,24 @@ class ApiService {
       DetailResponse detailResponse = DetailResponse.fromJson(response.data);
       print("detail ${detailResponse.data}");
       return detailResponse.data;
+    } on DioError catch (e) {
+      print("error ${e.message}");
+    } catch (e) {
+      print("errror ${e}");
+      throw Exception(e);
+    }
+  }
+
+  static Future<List<Item>> getProductRelated(int productID) async {
+    try {
+      Response response = await httpClient.dio.get("/products/${productID}/related");
+      ItemResponse itemResponse =
+      ItemResponse.fromJson(response.data);
+
+      print("response ${itemResponse}");
+
+      return itemResponse.data;
+
     } on DioError catch (e) {
       print("error ${e.message}");
     } catch (e) {

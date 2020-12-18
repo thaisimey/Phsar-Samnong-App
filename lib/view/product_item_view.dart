@@ -45,7 +45,7 @@ class _ProductItemViewState extends State<ProductItemView> {
   Widget build(BuildContext context) {
 
     return Container(
-        height: 135,
+        height: 160,
         child: Builder(
             builder: (BuildContext context) {
               return Stack(
@@ -68,6 +68,23 @@ class _ProductItemViewState extends State<ProductItemView> {
                         }
 
                       }),
+                  Positioned(
+                    bottom: 80,
+                    right: 5,
+                    child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.black.withOpacity(0.2),
+                        ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: IconButton(icon: Icon(Icons.arrow_forward_ios_rounded,size: 14,color:Colors.black,),onPressed: () {
+
+                          },),
+                        )),
+                  ),
                 ],
               );
             }

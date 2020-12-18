@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'file:///D:/Flutter/phsar_samnong/lib/model/category/category.dart';
 import 'package:phsar_samnong/model/view_state.dart';
 import 'package:phsar_samnong/repository/api_service.dart';
+
+import '../model/category/category.dart';
 
 class CategoriesViewModel extends ChangeNotifier {
   ViewState _viewState = ViewState.Empty;
