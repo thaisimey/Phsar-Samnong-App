@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:phsar_samnong/component/component_pro.dart';
 import 'package:phsar_samnong/constant/const.dart';
+import 'package:phsar_samnong/view/screen/product_by_category_view.dart';
 import 'package:phsar_samnong/view_model/categories_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,7 @@ import '../../constant/app_color.dart';
 import '../../constant/app_dimen.dart';
 import '../../constant/app_dimen.dart';
 import '../../model/category/category.dart';
-import '../product_item_view.dart';
+import '../screen/product_item_view.dart';
 
 class HomeScreenView extends StatefulWidget {
   @override
@@ -57,7 +58,11 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                               children: [
                                                 Text(value[position].nameEn,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black87),),
                                                 Spacer(),
-                                                Text("More",style: TextStyle(fontWeight: FontWeight.bold,color: HexColor(AppColor.red.toString())),)
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductByCategoriesView(catID: value[position].id,)));
+                                                  },
+                                                    child: Text("More",style: TextStyle(fontWeight: FontWeight.bold,color: HexColor(AppColor.red.toString())),))
                                               ],
                                             ),
                                           ),

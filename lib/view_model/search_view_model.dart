@@ -24,6 +24,10 @@ class SearchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  int count() {
+    return searchList.length;
+  }
+
 
 
   Future<void> getSearch(String keyword,int page,int limit) async {

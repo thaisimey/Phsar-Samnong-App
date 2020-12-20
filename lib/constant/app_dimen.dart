@@ -10,4 +10,11 @@ class AppDimen {
   static const double value18 = 18;
   static const double value20 = 20;
   static const double value22 = 22;
+  static const double value24 = 24;
+  static const double value26 = 26;
+  static const double value28 = 28;
+  static const double value30 = 30;
+  static const double value32 = 32;
+  static const double value34 = 34;
+  static const double value36 = 36;
 }

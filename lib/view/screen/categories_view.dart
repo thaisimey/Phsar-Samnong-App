@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/const.dart';
 import 'package:phsar_samnong/view_model/categories_view_model.dart';
 import 'package:provider/provider.dart';
@@ -55,22 +56,26 @@ class _CategoriesViewState extends State<CategoriesView> {
                       itemCount: value.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                            padding: const EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.only(left:AppDimen.value6,right: AppDimen.value6,bottom: AppDimen.value10),
                             child: Container(
-                              height: 45,
+                              color: Colors.white,
+                              height: 60,
                               width: MediaQuery.of(context).size.width,
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 18.0),
                                 child: Row(
                                   children: [
-                                    Container(
-                                      height: 100,
-                                      width: 90,
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                        image: NetworkImage(
-                                            "${Constant.baseURL}/${value[index].icon}"),
-                                      )),
+                                    Padding(
+                                      padding: const EdgeInsets.all(AppDimen.value4),
+                                      child: Container(
+                                        height: 100,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                          image: NetworkImage(
+                                              "${Constant.baseURL}/${value[index].icon}"),
+                                        )),
+                                      ),
                                     ),
                                     Column(
                                       mainAxisAlignment:

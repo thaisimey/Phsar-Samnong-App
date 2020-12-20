@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/const.dart';
@@ -11,11 +12,10 @@ import 'package:phsar_samnong/model/product/item.dart';
 import 'package:phsar_samnong/repository/api_service.dart';
 import 'package:phsar_samnong/view/screen/search_view.dart';
 
-import '../../component/component_pro.dart';
-import '../../constant/app_dimen.dart';
 import '../../constant/app_dimen.dart';
 import '../../model/product/item.dart';
 import '../../repository/api_service.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class DetailView extends StatefulWidget {
   final Item item;
@@ -300,20 +300,46 @@ class _DetailViewState extends State<DetailView> {
                             scrollDirection: Axis.horizontal,
                             itemCount: gallery.length,
                             itemBuilder: (context, position) {
-                              return Padding(
-                                padding: const EdgeInsets.all(18),
-                                child: Container(
-                                    width: MediaQuery.of(context).size.width / 2,
-                                    height: MediaQuery.of(context).size.height / 3,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                      color: Colors.white,
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            "${Constant.baseURL}/${gallery[position]}"),
-                                      ),
-                                    )),
+                              return GestureDetector(
+                                onTap: () {
+                                  PhotoViewGallery.builder(
+                                    itemCount: gallery.length,
+                                    builder: (context, index) {
+                                      return PhotoViewGalleryPageOptions(
+                                        imageProvider: NetworkImage(
+                                          gallery[index],
+                                        ),
+                                        // Contained = the smallest possible size to fit one dimension of the screen
+                                        minScale: PhotoViewComputedScale.contained * 0.8,
+                                        // Covered = the smallest possible size to fit the whole screen
+                                        maxScale: PhotoViewComputedScale.covered * 2,
+                                      );
+                                    },
+                                    scrollPhysics: BouncingScrollPhysics(),
+                                    // Set the background color to the "classic white"
+                                    backgroundDecoration: BoxDecoration(
+                                      color: Theme.of(context).canvasColor,
+                                    ),
+                                    loadFailedChild: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18),
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width / 2,
+                                      height: MediaQuery.of(context).size.height / 3,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                        color: Colors.white,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              "${Constant.baseURL}/${gallery[position]}"),
+                                        ),
+                                      )),
+                                ),
                               );
                             }),
                       ),
@@ -508,29 +534,37 @@ class _DetailViewState extends State<DetailView> {
                         scrollDirection: Axis.horizontal,
                         itemCount: relatedList.length,
                           itemBuilder: (context,position) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: AppDimen.value4,
-                                  // right: AppDimen.value18,
-                                  // top: AppDimen.value18,
-                                  bottom: AppDimen.value20
-                              ),
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                    width: MediaQuery.of(context).size.width / 4,
-                                    height: MediaQuery.of(context).size.height / 5,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(bottom:4.0),
-                                      child: Align(alignment:Alignment.bottomCenter,child: Text("\$ ${relatedList[position].prices[0].price.toString()}")),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                                      color: Colors.white,
-                                      image: DecorationImage(
-                                        image: NetworkImage("${Constant.baseURL}/${relatedList[position].itemImg}"),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => DetailView(relatedList[position])),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: AppDimen.value4,
+                                    // right: AppDimen.value18,
+                                    // top: AppDimen.value18,
+                                    bottom: AppDimen.value20
+                                ),
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width / 4,
+                                      height: MediaQuery.of(context).size.height / 5,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(bottom:4.0),
+                                        child: Align(alignment:Alignment.bottomCenter,child: Text("\$ ${relatedList[position].prices[0].price.toString()}")),
                                       ),
-                                    )),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                                        color: Colors.white,
+                                        image: DecorationImage(
+                                          image: NetworkImage("${Constant.baseURL}/${relatedList[position].itemImg}"),
+                                        ),
+                                      )),
+                                ),
                               ),
                             );
 

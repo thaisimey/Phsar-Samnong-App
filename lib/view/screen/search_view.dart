@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:phsar_samnong/constant/app_color.dart';
+import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/const.dart';
 import 'package:phsar_samnong/model/product/item.dart';
 import 'package:phsar_samnong/model/view_state.dart';
+import 'package:phsar_samnong/view/screen/detail_view.dart';
 import 'package:phsar_samnong/view_model/search_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +13,7 @@ class SearchView extends StatefulWidget {
   @override
   _SearchViewState createState() => _SearchViewState();
 }
+
 
 class _SearchViewState extends State<SearchView> {
 
@@ -19,6 +24,20 @@ class _SearchViewState extends State<SearchView> {
       appBar: CustomSearchBar(),
       body : Column(
         children: [
+          Selector<SearchViewModel, int>(
+            selector: (context,viewModel) => viewModel.count(),
+            builder: (__, value, ___) {
+              return Padding(
+                padding: const EdgeInsets.only(left: AppDimen.value34),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: (value == 0) ? SizedBox.shrink()
+                    :Text("${value.toString()} Items",style: TextStyle(color: HexColor(AppColor.proNameColor)),)),
+              );
+
+            },
+
+          ),
 
           SizedBox(
             height: 10,
@@ -40,58 +59,61 @@ class _SearchViewState extends State<SearchView> {
                                 itemCount: value.length,
                                 itemBuilder: (BuildContext context,
                                     int position) {
-                                  try {
-
-                                  } catch(e) {
-
-                                  }
-                                  return Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Container(
-                                        height: 45,
-                                        width: MediaQuery.of(context).size.width,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(right: 18.0),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                height: 100,
-                                                width: 90,
-                                                decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          "${Constant.baseURL}/${value[position].itemImg}"),
-                                                    )),
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: MediaQuery.of(context).size.width / 1.5,
-                                                    child: Text(
-                                                      value[position].nameEn,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => DetailView(value[position])),
+                                      );
+                                    },
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Container(
+                                          height: 45,
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(right: 18.0),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  height: 100,
+                                                  width: 90,
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            "${Constant.baseURL}/${value[position].itemImg}"),
+                                                      )),
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      width: MediaQuery.of(context).size.width / 1.5,
+                                                      child: Text(
+                                                        value[position].nameEn,
+                                                        style: TextStyle(
+                                                            color: Colors.black87,
+                                                            fontSize: 12),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "${value[position].prices[0].price} / ${value[position].prices[0].uom.nameEn} ",
                                                       style: TextStyle(
                                                           color: Colors.black87,
                                                           fontSize: 12),
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    "${value[position].prices[0].price} / ${value[position].prices[0].uom.nameEn} ",
-                                                    style: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 12),
-                                                  ),
-                                                ],
-                                              ),
+                                                  ],
+                                                ),
 
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ));
+                                        )),
+                                  );
 
 
                                 }
