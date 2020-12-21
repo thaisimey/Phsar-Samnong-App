@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ void main() {
       ChangeNotifierProvider.value(value: ProductViewModel()),
       ChangeNotifierProvider.value(value: ProductDetailViewModel()),
       ChangeNotifierProvider.value(value: SearchViewModel()),
+      StreamProvider.value(value: Connectivity().onConnectivityChanged),
     ],
     child: MyApp(),
   ));

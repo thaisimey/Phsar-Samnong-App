@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:connectivity/connectivity.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
@@ -16,6 +20,30 @@ class SearchView extends StatefulWidget {
 
 
 class _SearchViewState extends State<SearchView> {
+
+  StreamSubscription subscription;
+
+  @override
+  void initState() {
+    subscription = Connectivity().onConnectivityChanged.listen((result) {
+      print("result ${result}");
+      if (result == ConnectivityResult.none) {
+        return Flushbar(
+          flushbarPosition: FlushbarPosition.BOTTOM,
+          message: "no internet",
+          icon: Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.blue[300],
+          ),
+
+          duration: Duration(seconds: 30),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

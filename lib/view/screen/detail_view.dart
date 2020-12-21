@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:connectivity/connectivity.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:phsar_samnong/component/component_pro.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/const.dart';
@@ -46,10 +50,27 @@ class _DetailViewState extends State<DetailView> {
 
 
   var page;
+  StreamSubscription subscription;
 
   @override
   void initState() {
-    // TODO: implement initState
+    subscription = Connectivity().onConnectivityChanged.listen((result) {
+      print("result ${result}");
+      if (result == ConnectivityResult.none) {
+        return Flushbar(
+          flushbarPosition: FlushbarPosition.BOTTOM,
+          message: "no internet",
+          icon: Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.blue[300],
+          ),
+
+          duration: Duration(seconds: 30),
+          leftBarIndicatorColor: Colors.blue[300],
+        )..show(context);
+      }
+    });
     super.initState();
     item = widget.item;
     productID = item.id;
@@ -464,7 +485,19 @@ class _DetailViewState extends State<DetailView> {
                                         right:BorderSide(color:Colors.black),
                                         bottom: BorderSide(color:Colors.black)
                                     )),
-                                child: Text("item 4"),
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      IconButton(icon: Icon(Icons.remove),),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await _showMyDialog();
+                                        },
+                                          child: Text("1")),
+                                      IconButton(icon: Icon(Icons.add),),
+                                    ],
+                                  ),
+                                )
                               )
                             ],
                           ),
@@ -492,6 +525,7 @@ class _DetailViewState extends State<DetailView> {
                 Container(
                   height: 60,
                   child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: mobileList.length,
                       itemBuilder: (context,index) {
                         return Padding(
@@ -534,39 +568,8 @@ class _DetailViewState extends State<DetailView> {
                         scrollDirection: Axis.horizontal,
                         itemCount: relatedList.length,
                           itemBuilder: (context,position) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => DetailView(relatedList[position])),
-                                );
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: AppDimen.value4,
-                                    // right: AppDimen.value18,
-                                    // top: AppDimen.value18,
-                                    bottom: AppDimen.value20
-                                ),
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Container(
-                                      width: MediaQuery.of(context).size.width / 4,
-                                      height: MediaQuery.of(context).size.height / 5,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(bottom:4.0),
-                                        child: Align(alignment:Alignment.bottomCenter,child: Text("\$ ${relatedList[position].prices[0].price.toString()}")),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                                        color: Colors.white,
-                                        image: DecorationImage(
-                                          image: NetworkImage("${Constant.baseURL}/${relatedList[position].itemImg}"),
-                                        ),
-                                      )),
-                                ),
-                              ),
-                            );
+                            var item = relatedList[position];
+                            return ComponentPro.movieItem(item, context);
 
                       }),
                     ),
@@ -596,5 +599,53 @@ class _DetailViewState extends State<DetailView> {
             ),
           ),
         ));
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Align(alignment: Alignment.center,child: Text('Input quantity product')),
+                Padding(
+                  padding: const EdgeInsets.only(top: AppDimen.value10),
+                  child: Container(
+                    height: 40,
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(6),
+                        border: new OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.teal)),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.green,
+                            style: BorderStyle.solid,
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              color: Colors.green,
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

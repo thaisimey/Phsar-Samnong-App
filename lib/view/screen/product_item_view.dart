@@ -14,7 +14,7 @@ class ProductItemView extends StatefulWidget {
   _ProductItemViewState createState() => _ProductItemViewState();
 }
 
-class _ProductItemViewState extends State<ProductItemView> {
+class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAliveClientMixin {
 
   StreamController<List<Item>> stream = StreamController();
 
@@ -45,7 +45,7 @@ class _ProductItemViewState extends State<ProductItemView> {
   Widget build(BuildContext context) {
 
     return Container(
-        height: 160,
+        height: 140,
         child: Builder(
             builder: (BuildContext context) {
               return Stack(
@@ -69,21 +69,26 @@ class _ProductItemViewState extends State<ProductItemView> {
 
                       }),
                   Positioned(
-                    bottom: 80,
+                    bottom: 60,
                     right: 5,
-                    child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.black.withOpacity(0.2),
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: IconButton(icon: Icon(Icons.arrow_forward_ios_rounded,size: 14,color:Colors.black,),onPressed: () {
-
-                          },),
-                        )),
+                    child: Material(
+                      color: Colors.black.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(20),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.black.withOpacity(0.2),
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Icon(Icons.arrow_forward_ios_rounded,size: 14,color:Colors.black),
+                            )),
+                      ),
+                    ),
                   ),
                 ],
               );
@@ -99,5 +104,9 @@ class _ProductItemViewState extends State<ProductItemView> {
     stream.close();
     super.dispose();
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
