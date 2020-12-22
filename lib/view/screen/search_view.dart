@@ -31,13 +31,26 @@ class _SearchViewState extends State<SearchView> {
         return Flushbar(
           flushbarPosition: FlushbarPosition.BOTTOM,
           message: "no internet",
-          icon: Icon(
+          icon:
+          Icon(
             Icons.info_outline,
             size: 28.0,
             color: Colors.blue[300],
           ),
+          messageText: Row(
+            children: [
+              Text("no internet",style: TextStyle(color: Colors.white),),
+              Spacer(),
+              Container(
+                height: 20,
+                child: FlatButton(onPressed: (){},
+                    child: Text("Try again",style: TextStyle(color: Colors.green),)),
+              )
 
-          duration: Duration(seconds: 30),
+            ],
+          ),
+
+          duration: Duration(seconds: 6),
           leftBarIndicatorColor: Colors.blue[300],
         )..show(context);
       }
@@ -78,74 +91,89 @@ class _SearchViewState extends State<SearchView> {
                   builder: (BuildContext context) {
                     return Stack(
                       children: [
-                        Selector<SearchViewModel, List<Item>>(
-                          selector: (context, value) => value.searchList,
+                        Selector<SearchViewModel, ViewState>(
+                          selector: (context, value) => value.viewStateSearch,
                           builder: (__, value, ___) {
-                            return ListView.builder(
-                                // controller: _scrollController,
-                                scrollDirection: Axis.vertical,
-                                itemCount: value.length,
-                                itemBuilder: (BuildContext context,
-                                    int position) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => DetailView(value[position])),
-                                      );
-                                    },
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Container(
-                                          height: 45,
-                                          width: MediaQuery.of(context).size.width,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(right: 18.0),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  height: 100,
-                                                  width: 90,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            "${Constant.baseURL}/${value[position].itemImg}"),
-                                                      )),
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: MediaQuery.of(context).size.width / 1.5,
-                                                      child: Text(
-                                                        value[position].nameEn,
-                                                        style: TextStyle(
-                                                            color: Colors.black87,
-                                                            fontSize: 12),
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
+                            if (value == ViewState.Data) {
+                              return Consumer<SearchViewModel>(builder:
+                                  (BuildContext context, value, Widget child) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    if (value.searchList.length <= 0) {
+                                      return Container(child: Center());
+                                    } else {
+                                      return ListView.builder(
+                                        // controller: _scrollController,
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: value.searchList.length,
+                                          itemBuilder: (BuildContext context,
+                                              int position) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => DetailView(value.searchList[position].id)),
+                                                );
+                                              },
+                                              child: Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: Container(
+                                                    height: 45,
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(right: 18.0),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            height: 100,
+                                                            width: 90,
+                                                            decoration: BoxDecoration(
+                                                                image: DecorationImage(
+                                                                  image: NetworkImage(
+                                                                      "${Constant.baseURL}/${value.searchList[position].itemImg}"),
+                                                                )),
+                                                          ),
+                                                          Column(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Container(
+                                                                width: MediaQuery.of(context).size.width / 1.5,
+                                                                child: Text(
+                                                                  value.searchList[position].nameEn,
+                                                                  style: TextStyle(
+                                                                      color: Colors.black87,
+                                                                      fontSize: 12),
+                                                                  maxLines: 1,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "${value.searchList[position].prices[0].price} / ${value.searchList[position].prices[0].uom.nameEn} ",
+                                                                style: TextStyle(
+                                                                    color: Colors.black87,
+                                                                    fontSize: 12),
+                                                              ),
+                                                            ],
+                                                          ),
+
+                                                        ],
                                                       ),
                                                     ),
-                                                    Text(
-                                                      "${value[position].prices[0].price} / ${value[position].prices[0].uom.nameEn} ",
-                                                      style: TextStyle(
-                                                          color: Colors.black87,
-                                                          fontSize: 12),
-                                                    ),
-                                                  ],
-                                                ),
-
-                                              ],
-                                            ),
-                                          ),
-                                        )),
-                                  );
+                                                  )),
+                                            );
 
 
-                                }
-                            );
+                                          }
+                                      );
+                                    }
+                                  },
+                                );
+                              });
+                            } else {
+                              return SizedBox.shrink();
+                            }
                           },
 
                         ),
@@ -156,7 +184,11 @@ class _SearchViewState extends State<SearchView> {
                               return Container(
                                 color: Colors.transparent,
                                 child: Center(
-                                  child: CircularProgressIndicator(backgroundColor: Colors.red,),
+                                  child: CircularProgressIndicator(
+                                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+                                    strokeWidth: 2,
+                                    backgroundColor: Colors.transparent,
+                                  ),
                                 ),
                               );
                             } else {
@@ -182,8 +214,20 @@ class _SearchViewState extends State<SearchView> {
                           selector: (context, value) => value.viewStateSearch,
                           builder: (__, value, ___) {
                             if(value == ViewState.Empty) {
-                              return Center(
-                                  child: Text('Your search did not have any results',style: TextStyle(color: Colors.grey,fontSize: 20),)
+                              return Container(
+                                height: MediaQuery.of(context).size.height,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset("assets/images/home/icon/nodata.png",height: 40,width: 40,),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: AppDimen.value8),
+                                        child: Text("no data",style: TextStyle(color: Colors.grey),),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               );
                             } else {
                               return SizedBox.shrink();

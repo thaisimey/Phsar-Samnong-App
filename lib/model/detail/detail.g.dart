@@ -29,7 +29,7 @@ Detail _$DetailFromJson(Map<String, dynamic> json) {
     (json['gallery'] as List)?.map((e) => e as String)?.toList(),
     (json['prices'] as List)
         ?.map((e) =>
-            e == null ? null : Prices.fromJson(e as Map<String, dynamic>))
+            e == null ? null : Price.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     (json['mobile'] as List)
         ?.map((e) =>
@@ -62,8 +62,8 @@ Map<String, dynamic> _$DetailToJson(Detail instance) => <String, dynamic>{
       'mobile': instance.mobile,
     };
 
-Prices _$PricesFromJson(Map<String, dynamic> json) {
-  return Prices(
+Price _$PricesFromJson(Map<String, dynamic> json) {
+  return Price(
     json['id'] as int,
     json['variation'] as String,
     (json['price'] as num)?.toDouble(),
@@ -74,7 +74,7 @@ Prices _$PricesFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PricesToJson(Prices instance) => <String, dynamic>{
+Map<String, dynamic> _$PricesToJson(Price instance) => <String, dynamic>{
       'id': instance.id,
       'variation': instance.variation,
       'price': instance.price,

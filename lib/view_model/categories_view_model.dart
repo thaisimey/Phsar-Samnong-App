@@ -23,9 +23,20 @@ class CategoriesViewModel extends ChangeNotifier {
 
   void getCategories() async {
     try {
+      viewState = ViewState.Loading;
+      Future.delayed(Duration(milliseconds: 1000),() {
+        viewState = ViewState.Data;
+      });
       var cat = await ApiService.getCategories();
       catList = cat;
+
+      if(catList.length <= 0 ) {
+        viewState = ViewState.Empty;
+      } else {
+        viewState = ViewState.Data;
+      }
     } catch (e) {
+      viewState = ViewState.Error;
       print("error ${e}");
     }
   }

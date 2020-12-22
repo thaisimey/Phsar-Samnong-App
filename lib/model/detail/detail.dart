@@ -37,7 +37,7 @@ class Detail {
   @JsonKey(name: "is_favorite")
   bool isFavorite;
   List<String> gallery;
-  List<Prices> prices;
+  List<Price> prices;
   List<Mobile> mobile;
 
   Detail(
@@ -68,7 +68,7 @@ class Detail {
 }
 
 @JsonSerializable()
-class Prices {
+class Price {
   int id;
   String variation;
   double price;
@@ -76,9 +76,9 @@ class Prices {
   int discountDollar;
   Uom uom;
 
-  Prices(this.id, this.variation, this.price, this.discountDollar, this.uom);
+  Price(this.id, this.variation, this.price, this.discountDollar, this.uom);
 
-  factory Prices.fromJson(Map<String, dynamic> json) => _$PricesFromJson(json);
+  factory Price.fromJson(Map<String, dynamic> json) => _$PricesFromJson(json);
   Map<String, dynamic> toJson() => _$PricesToJson(this);
 }
 

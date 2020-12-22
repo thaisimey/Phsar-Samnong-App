@@ -33,6 +33,11 @@ class SearchViewModel extends ChangeNotifier {
   Future<void> getSearch(String keyword,int page,int limit) async {
     try {
 
+      viewStateSearch = ViewState.Loading;
+      Future.delayed(Duration(milliseconds: 1000),() {
+        viewStateSearch = ViewState.Data;
+      });
+
       var resultSearch = await ApiService.getSearch(keyword,page,limit:limit);
 
       viewStateSearch = ViewState.Loading;

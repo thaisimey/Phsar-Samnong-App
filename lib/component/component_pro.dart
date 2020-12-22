@@ -16,7 +16,7 @@ class ComponentPro {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DetailView(item)),
+              MaterialPageRoute(builder: (context) => DetailView(item.id)),
             );
           },
           child: Container(
@@ -140,7 +140,7 @@ class ComponentPro {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DetailView(item)),
+            MaterialPageRoute(builder: (context) => DetailView(item.id)),
           );
         },
         child: Container(
@@ -150,22 +150,25 @@ class ComponentPro {
           ),
           child: Column(
             children: [
-              CachedNetworkImage(
-                imageUrl: item.itemImg == null
-                    ? ""
-                    : "${Constant.baseURL}/" +
-                    item.itemImg,
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 80.0,
-                  height: 90,
-                  decoration: BoxDecoration(
-                    // shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: imageProvider),
+              Container(
+                height: 90,
+                child: CachedNetworkImage(
+                  imageUrl: item.itemImg == null
+                      ? ""
+                      : "${Constant.baseURL}/" +
+                      item.itemImg,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 80.0,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      // shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: imageProvider),
+                    ),
                   ),
+                  placeholder: (context, url) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey),
+                  errorWidget: (context, url, error) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey,),
                 ),
-                placeholder: (context, url) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey),
-                errorWidget: (context, url, error) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey,),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: AppDimen.value10),

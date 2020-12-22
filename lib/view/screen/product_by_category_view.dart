@@ -100,7 +100,12 @@ class _ProductByCategoriesState extends State<ProductByCategoriesView> {
                               return ComponentPro.movieGridItem(item, context);
                             });
                       } else {
-                        return Center(child: CircularProgressIndicator());
+                        return Center(
+                            child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+                              strokeWidth: 2,
+                              backgroundColor: Colors.transparent,
+                            ));
                       }
 
                     });

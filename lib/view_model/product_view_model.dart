@@ -30,9 +30,6 @@ class ProductViewModel extends ChangeNotifier {
       // print("pro $pro");
       return pro;
 
-      Future.delayed(Duration(milliseconds: 1000),() {
-        viewState = ViewState.Data;
-      });
     } catch (e) {
       print("error ${e}");
       return List();

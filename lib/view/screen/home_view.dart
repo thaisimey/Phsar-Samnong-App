@@ -61,11 +61,16 @@ class _HomeViewState extends State<HomeView>
               ),
             ),
             Spacer(),
-            GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SearchView()));
-                },
-                child: Image.asset("assets/images/home/icon/search.png"))
+            Container(
+              height: 40,
+              width: 40,
+              child: InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SearchView()));
+                  },
+                  child: Image.asset("assets/images/home/icon/search.png")),
+            )
           ],
         ),
       ),
@@ -99,11 +104,11 @@ class _HomeViewState extends State<HomeView>
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.search,
+              Icons.account_circle_outlined ,
             ),
             label: "",
             activeIcon: Icon(
-              Icons.search,
+              Icons.account_circle,
             ),
           ),
         ],

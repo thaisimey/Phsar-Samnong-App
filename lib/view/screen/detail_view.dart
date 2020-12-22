@@ -1,30 +1,28 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:phsar_samnong/component/component_pro.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/const.dart';
 import 'package:phsar_samnong/model/detail/detail.dart';
-import 'package:phsar_samnong/model/product/item.dart';
 import 'package:phsar_samnong/repository/api_service.dart';
+import 'package:phsar_samnong/view/screen/related_product_view.dart';
 import 'package:phsar_samnong/view/screen/search_view.dart';
 
 import '../../constant/app_dimen.dart';
 import '../../model/product/item.dart';
 import '../../repository/api_service.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 
 class DetailView extends StatefulWidget {
-  final Item item;
+  final int id;
 
-  const DetailView(this.item);
+  const DetailView(this.id);
 
   @override
   _DetailViewState createState() => _DetailViewState();
@@ -32,12 +30,13 @@ class DetailView extends StatefulWidget {
 
 class _DetailViewState extends State<DetailView> {
   int productID;
-  Item item;
+
   // List<Detail> detailList = List();
   List<Mobile> mobileList = List();
-  List<Item> relatedList = List();
 
-  // Detail detail;
+  // List<Item> relatedList = List();
+  List<Price> priceList = List();
+
   String title;
   String description = '';
   String specification = '';
@@ -47,7 +46,7 @@ class _DetailViewState extends State<DetailView> {
   String uom = "";
   int view = 0;
   String variation = "";
-
+  int id;
 
   var page;
   StreamSubscription subscription;
@@ -65,21 +64,38 @@ class _DetailViewState extends State<DetailView> {
             size: 28.0,
             color: Colors.blue[300],
           ),
-
-          duration: Duration(seconds: 30),
+          messageText: Row(
+            children: [
+              Text(
+                "no internet",
+                style: TextStyle(color: Colors.white),
+              ),
+              Spacer(),
+              Container(
+                height: 20,
+                child: FlatButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Try again",
+                      style: TextStyle(color: Colors.green),
+                    )),
+              )
+            ],
+          ),
+          duration: Duration(seconds: 6),
           leftBarIndicatorColor: Colors.blue[300],
         )..show(context);
       }
     });
     super.initState();
-    item = widget.item;
-    productID = item.id;
+    id = widget.id;
+    productID = widget.id;
     // print("item ${item.id}");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      var detail = await ApiService.getProductDetail(item.id);
+      var detail = await ApiService.getProductDetail(widget.id);
       print("res detailResponse ${detail.itemImg}");
 
-      relatedList = await ApiService.getProductRelated(detail.id);
+      // relatedList = await ApiService.getProductRelated(detail.id);
 
       setState(() {
         title = detail.nameEn;
@@ -92,6 +108,12 @@ class _DetailViewState extends State<DetailView> {
         view = detail.viewCnt;
         variation = detail.prices[0].variation;
         mobileList = detail.mobile;
+        id = detail.id;
+        for (var price in detail.prices) {
+          priceList.add(price);
+        }
+
+        print("list pricelist ${priceList.length}");
       });
     });
   }
@@ -119,7 +141,6 @@ class _DetailViewState extends State<DetailView> {
               ),
               Image.asset(
                 "assets/images/home/flag/khmer@3x.png",
-
                 width: 25,
               ),
               Padding(
@@ -137,7 +158,7 @@ class _DetailViewState extends State<DetailView> {
                 ),
               ),
               Spacer(),
-              GestureDetector(
+              InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -148,457 +169,432 @@ class _DetailViewState extends State<DetailView> {
             ],
           ),
         ),
-        body: (title == null) ? Center(child: CircularProgressIndicator())
+        body: (title == null)
+            ? Center(
+                child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+                strokeWidth: 2,
+                backgroundColor: Colors.transparent,
+              ))
             : SingleChildScrollView(
-          child: Container(
-            color: HexColor(AppColor.background),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Container(
-                    //   width: MediaQuery.of(context).size.width/2.5,
-                    //   height: MediaQuery.of(context).size.height/4,
-                    //   decoration: BoxDecoration(
-                    //       image: DecorationImage(
-                    //         image: NetworkImage(
-                    //             "${Constant.baseURL}/$img"),
-                    //       )),
-                    //   ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: AppDimen.value14,
-                          right: AppDimen.value18,
-                          top: AppDimen.value18,
-                          bottom: AppDimen.value18),
-                      child: Container(
-                          width: MediaQuery.of(context).size.width / 3,
-                          height: MediaQuery.of(context).size.height / 5.4,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            color: Colors.white,
-                            image: DecorationImage(
-                              image: NetworkImage("${Constant.baseURL}/$img"),
-                            ),
-                          )),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppDimen.value18),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 1.75,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              title,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: AppDimen.value6),
-                              child: Text(
-                                "Description",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                child: Container(
+                  color: HexColor(AppColor.background),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: AppDimen.value14,
+                                right: AppDimen.value18,
+                                top: AppDimen.value18,
+                                bottom: AppDimen.value18),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height/5,
+                              width: MediaQuery.of(context).size.width/3,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(AppDimen.value4))
+                              ),
+                              child: Container(
+                                height: 90,
+                                child: CachedNetworkImage(
+                                  imageUrl: img == null
+                                      ? ""
+                                      : "${Constant.baseURL}/" +
+                                      img,
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    width: 70.0,
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                      // shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey),
+                                  errorWidget: (context, url, error) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey,),
+                                ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: AppDimen.value6),
-                              child: Text(
-                                  (description == null) ? "N/A" : description),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: AppDimen.value8),
-                              child: Text("Specification",
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: AppDimen.value8),
-                              child: Text((specification == null)
-                                  ? "N/A"
-                                  : specification),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: AppDimen.value12),
-                              child: Text(
-                                "\$ ${price.toString()} / $uom",
-                                style:
-                                    TextStyle(color: Colors.green, fontSize: 16),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: AppDimen.value18),
-                              child: Row(
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: AppDimen.value18),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 1.75,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: AppDimen.value4,
-                                        right: AppDimen.value4),
-                                    child: Icon(
-                                      Icons.favorite_border,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: AppDimen.value4,
-                                        right: AppDimen.value4),
-                                    child: Image(
-                                        image: AssetImage(
-                                            "assets/images/social/facebook.png"),height: 20,width: 20,),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: AppDimen.value4,
-                                        right: AppDimen.value4),
-                                    child: Icon(Icons.share),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: AppDimen.value4,
-                                        right: AppDimen.value4),
-                                    child: Image(
-                                      image: AssetImage(
-                                          "assets/images/social/eyes.png"),
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                                  ),
                                   Text(
-                                    view.toString(),
-                                    style: TextStyle(fontSize: 10),
+                                    title,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: AppDimen.value6),
+                                    child: Text(
+                                      "Description",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: AppDimen.value6),
+                                    child: Text((description == null)
+                                        ? "N/A"
+                                        : description),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: AppDimen.value8),
+                                    child: Text("Specification",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: AppDimen.value8),
+                                    child: Text((specification == null)
+                                        ? "N/A"
+                                        : specification),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: AppDimen.value12),
+                                    child: Text(
+                                      "\$ ${price.toString()} / $uom",
+                                      style: TextStyle(
+                                          color: Colors.green, fontSize: 16),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: AppDimen.value18),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: AppDimen.value4,
+                                              right: AppDimen.value4),
+                                          child: Icon(
+                                            Icons.favorite_border,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: AppDimen.value4,
+                                              right: AppDimen.value4),
+                                          child: Image(
+                                            image: AssetImage(
+                                                "assets/images/social/facebook.png"),
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: AppDimen.value4,
+                                              right: AppDimen.value4),
+                                          child: Icon(Icons.share),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: AppDimen.value4,
+                                              right: AppDimen.value4),
+                                          child: Image(
+                                            image: AssetImage(
+                                                "assets/images/social/eyes.png"),
+                                            height: 24,
+                                            width: 24,
+                                          ),
+                                        ),
+                                        Text(
+                                          view.toString(),
+                                          style: TextStyle(fontSize: 10),
+                                        )
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: AppDimen.value6,
-                ),
-
-                (gallery.isEmpty) ? SizedBox.shrink()
-                    : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: AppDimen.value14),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Gallery",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(
-                        // top: AppDimen.value14,
-                          left: AppDimen.value16,
-                          right: AppDimen.value16),
-                      width: MediaQuery.of(context).size.width,
-                      child: Divider(
-                        thickness: 1,
-                        color: Colors.grey,
+                      SizedBox(
+                        height: AppDimen.value6,
                       ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height / 4,
-                      child: Scrollbar(
-                        thickness: 2,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: gallery.length,
-                            itemBuilder: (context, position) {
-                              return GestureDetector(
-                                onTap: () {
-                                  PhotoViewGallery.builder(
-                                    itemCount: gallery.length,
-                                    builder: (context, index) {
-                                      return PhotoViewGalleryPageOptions(
-                                        imageProvider: NetworkImage(
-                                          gallery[index],
-                                        ),
-                                        // Contained = the smallest possible size to fit one dimension of the screen
-                                        minScale: PhotoViewComputedScale.contained * 0.8,
-                                        // Covered = the smallest possible size to fit the whole screen
-                                        maxScale: PhotoViewComputedScale.covered * 2,
-                                      );
-                                    },
-                                    scrollPhysics: BouncingScrollPhysics(),
-                                    // Set the background color to the "classic white"
-                                    backgroundDecoration: BoxDecoration(
-                                      color: Theme.of(context).canvasColor,
-                                    ),
-                                    loadFailedChild: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18),
-                                  child: Container(
-                                      width: MediaQuery.of(context).size.width / 2,
-                                      height: MediaQuery.of(context).size.height / 3,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
-                                        color: Colors.white,
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              "${Constant.baseURL}/${gallery[position]}"),
-                                        ),
+                      (gallery.isEmpty)
+                          ? SizedBox.shrink()
+                          : Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: AppDimen.value14),
+                                  child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Gallery",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       )),
                                 ),
-                              );
-                            }),
+                                Container(
+                                  padding: EdgeInsets.only(
+                                      // top: AppDimen.value14,
+                                      left: AppDimen.value16,
+                                      right: AppDimen.value16),
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Divider(
+                                    thickness: 1,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Container(
+                                  height:
+                                      MediaQuery.of(context).size.height / 4,
+                                  child: Scrollbar(
+                                    thickness: 2,
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: gallery.length,
+                                        itemBuilder: (context, position) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(18),
+                                            child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    3,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(8)),
+                                                  color: Colors.white,
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        "${Constant.baseURL}/${gallery[position]}"),
+                                                  ),
+                                                )),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                              ],
+                            ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: AppDimen.value14, top: AppDimen.value4),
+                        child: Text(
+                          "Price Lists",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: AppDimen.value14,top: AppDimen.value4),
-                  child: Text(
-                    "Price Lists",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                      left: AppDimen.value16, right: AppDimen.value16),
-                  width: MediaQuery.of(context).size.width,
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: AppDimen.value12, right: AppDimen.value12),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
+                      Container(
+                        padding: EdgeInsets.only(
+                            left: AppDimen.value16, right: AppDimen.value16),
+                        width: MediaQuery.of(context).size.width,
+                        child: Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: AppDimen.value8, right: AppDimen.value8),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
                                 height: 30,
-                                width: MediaQuery.of(context).size.width / 2,
                                 decoration: BoxDecoration(
-                                    color: HexColor(AppColor.grey),
+                                    color: HexColor(AppColor.red),
                                     border: Border(
-                                      left:BorderSide(color:Colors.black),
-                                      top: BorderSide(color:Colors.black),
-                                      bottom: BorderSide(color:Colors.black)
-                                    )),
+                                        left: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom:
+                                            BorderSide(color: Colors.black))),
                                 child: Align(
                                     alignment: Alignment.center,
                                     child: Text("Variation")),
                               ),
-                              Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width / 2,
-                                decoration: BoxDecoration(
-                                    color: HexColor(AppColor.background),
-                                    border: Border(
-                                        left:BorderSide(color:Colors.black),
-                                        bottom: BorderSide(color:Colors.black)
-                                    )),
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(variation)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
+                            ),
+                            Expanded(
+                              child: Container(
                                 height: 30,
-                                width: MediaQuery.of(context).size.width / 2,
                                 decoration: BoxDecoration(
-                                    color: HexColor(AppColor.grey),
+                                    color: HexColor(AppColor.red),
                                     border: Border.all(color: Colors.black)),
                                 child: Align(
                                     alignment: Alignment.center,
                                     child: Text("Price")),
                               ),
-                              Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width / 2,
-                                decoration: BoxDecoration(
-                                    color: HexColor(AppColor.background),
-                                    border: Border(
-                                        right:BorderSide(color:Colors.black),
-                                        left:BorderSide(color:Colors.black),
-                                        bottom: BorderSide(color:Colors.black)
-                                    )),
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text("\$ ${price.toString()} / $uom")),
-                              )
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
+                            ),
+                            Expanded(
+                              child: Container(
                                 height: 30,
-                                width: MediaQuery.of(context).size.width / 2,
                                 decoration: BoxDecoration(
-                                    color: HexColor(AppColor.grey),
+                                    color: HexColor(AppColor.red),
                                     border: Border(
-                                        top:BorderSide(color:Colors.black),
-                                        right:BorderSide(color:Colors.black),
-                                        bottom: BorderSide(color:Colors.black)
-                                    )),
+                                        top: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        bottom:
+                                            BorderSide(color: Colors.black))),
                                 child: Align(
                                     alignment: Alignment.center,
                                     child: Text("Quantity")),
                               ),
-                              Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width / 2,
-                                decoration: BoxDecoration(
-                                    color: HexColor(AppColor.background),
-                                    border: Border(
-                                        right:BorderSide(color:Colors.black),
-                                        bottom: BorderSide(color:Colors.black)
-                                    )),
-                                child: Container(
-                                  child: Row(
-                                    children: [
-                                      IconButton(icon: Icon(Icons.remove),),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await _showMyDialog();
-                                        },
-                                          child: Text("1")),
-                                      IconButton(icon: Icon(Icons.add),),
-                                    ],
-                                  ),
-                                )
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: AppDimen.value8, right: AppDimen.value8),
+                        child: Container(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: priceList.length,
+                              itemBuilder: (context, position) {
+                                return Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                12,
+                                        decoration: BoxDecoration(
+                                            color: HexColor(AppColor.white),
+                                            border: Border(
+                                                left: BorderSide(
+                                                    color: Colors.black),
+                                                bottom: BorderSide(
+                                                    color: Colors.black))),
+                                        child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              priceList[position].variation,
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            )),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                12,
+                                        decoration: BoxDecoration(
+                                            color: HexColor(AppColor.white),
+                                            border: Border(
+                                                left: BorderSide(
+                                                    color: Colors.black),
+                                                right: BorderSide(
+                                                    color: Colors.black),
+                                                bottom: BorderSide(
+                                                    color: Colors.black))),
+                                        child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("${priceList[position]
+                                                .price
+                                                .toString()}/${priceList[position]
+                                                .uom.nameEn}")),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                12,
+                                        decoration: BoxDecoration(
+                                            color: HexColor(AppColor.white),
+                                            border: Border(
+                                                right: BorderSide(
+                                                    color: Colors.black),
+                                                bottom: BorderSide(
+                                                    color: Colors.black))),
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.remove),
+                                            ),
+                                            GestureDetector(
+                                                onTap: () async {
+                                                  await _showMyDialog();
+                                                },
+                                                child: Text("0")),
+                                            IconButton(
+                                              icon: Icon(Icons.add),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: AppDimen.value14, top: AppDimen.value12),
+                        child: Text(
+                          "Contact Information",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(
+                            // top: AppDimen.value14,
+                            left: AppDimen.value16,
+                            right: AppDimen.value16),
+                        width: MediaQuery.of(context).size.width,
+                        child: Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Container(
+                        height: 60,
+                        child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: mobileList.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: AppDimen.value16,
+                                    bottom: AppDimen.value8),
+                                child: Row(
+                                  children: [
+                                    Text(mobileList[index].company.name),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 3,
+                                    ),
+                                    Text(": ${mobileList[index].phone}"),
+                                  ],
+                                ),
+                              );
+                            }),
+                      ),
+                      RelatedProductView(id)
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: AppDimen.value14,top: AppDimen.value12),
-                  child: Text("Contact Information",style: TextStyle(fontWeight: FontWeight.bold),),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                      // top: AppDimen.value14,
-                      left: AppDimen.value16,
-                      right: AppDimen.value16),
-                  width: MediaQuery.of(context).size.width,
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
-                ),
-
-                Container(
-                  height: 60,
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: mobileList.length,
-                      itemBuilder: (context,index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left:AppDimen.value16,bottom: AppDimen.value8),
-                          child: Row(
-                            children: [
-                              Text(mobileList[index].company.name),
-                              SizedBox(width: MediaQuery.of(context).size.width / 3,),
-                              Text(": ${mobileList[index].phone}"),
-
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: AppDimen.value14),
-                  child: Text("Related product",style: TextStyle(fontWeight: FontWeight.bold),),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                    // top: AppDimen.value14,
-                      left: AppDimen.value16,
-                      right: AppDimen.value16),
-                  width: MediaQuery.of(context).size.width,
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
-                ),
-
-                // ComponentPro.itemList(relatedList,context),
-
-                Stack(
-                  children: [
-                    Container(
-                      height: 160,
-                      padding: EdgeInsets.only(left: 10),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: relatedList.length,
-                          itemBuilder: (context,position) {
-                            var item = relatedList[position];
-                            return ComponentPro.movieItem(item, context);
-
-                      }),
-                    ),
-                    Positioned(
-                      bottom: 80,
-                      right: 5,
-                      child: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.black.withOpacity(0.2),
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: IconButton(icon: Icon(Icons.arrow_forward_ios_rounded,size: 14,color:Colors.black,),onPressed: () {
-
-                            },),
-                          )),
-                    ),
-                  ],
-                )
-
-
-
-              ],
-            ),
-          ),
-        ));
+              ));
   }
 
   Future<void> _showMyDialog() async {
@@ -610,7 +606,9 @@ class _DetailViewState extends State<DetailView> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Align(alignment: Alignment.center,child: Text('Input quantity product')),
+                Align(
+                    alignment: Alignment.center,
+                    child: Text('Input quantity product')),
                 Padding(
                   padding: const EdgeInsets.only(top: AppDimen.value10),
                   child: Container(

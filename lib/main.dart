@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+          fontFamily: 'Raleway',
         primaryColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
