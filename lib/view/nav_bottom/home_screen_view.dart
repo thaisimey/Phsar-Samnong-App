@@ -93,14 +93,14 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                           itemBuilder: (context, position) {
                                             return Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                   height: AppDimen.value4,
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets
-                                                          .only(
+                                                      .only(
                                                       left: AppDimen.value10,
                                                       right: AppDimen.value10,
                                                       bottom: AppDimen.value8),
@@ -111,9 +111,9 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                                             .nameEn,
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight.bold,
+                                                            FontWeight.bold,
                                                             color:
-                                                                Colors.black87),
+                                                            Colors.black87),
                                                       ),
                                                       Spacer(),
                                                       InkWell(
@@ -122,7 +122,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (BuildContext
-                                                                            context) =>
+                                                                    context) =>
                                                                         ProductByCategoriesView(
                                                                           catID: value
                                                                               .catList[position]
@@ -133,8 +133,8 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                                             "More",
                                                             style: TextStyle(
                                                                 fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                FontWeight
+                                                                    .bold,
                                                                 color: HexColor(
                                                                     AppColor.red
                                                                         .toString())),

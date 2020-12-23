@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/app_font_size.dart';
 import 'package:phsar_samnong/constant/app_string.dart';
@@ -9,6 +11,32 @@ class AccountScreenView extends StatefulWidget {
 }
 
 class _AccountScreenViewState extends State<AccountScreenView> {
+
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+    // Create a new credential
+    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    FirebaseAuth.instance.signInWithCredential(credential).then((value) {
+      print('auth cre ${value.user.toString()}');
+    });
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn  = GoogleSignIn();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -88,49 +116,48 @@ class _AccountScreenViewState extends State<AccountScreenView> {
           ),
           SizedBox(height: 20,),
 
+
           Padding(
             padding: const EdgeInsets.only(left:AppDimen.value20,right:AppDimen.value20 ),
-            child: Material(
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.greenAccent
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left:AppDimen.value14,right:AppDimen.value14 ),
-                      child: Row(
-                        children: [
-                          Image.asset("assets/images/social/facebook.png",height: 30,width: 30,),
-                          SizedBox(width:70,),
-                          Align(alignment: Alignment.center,child: Text(AppString.signInWithGoogle,))
-                        ],
-                      ),
-                    )),
-
-              ),
-              color: Colors.transparent,
-            ),
-          ),
-
-          Center(
             child: new Container(
+              decoration: BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.circular(8),
+                // color: Colors.greenAccent
+              ),
               child: new Material(
                 child: new InkWell(
-                  onTap: (){print("tapped");},
+                  onTap: () async {
+                    await signInWithGoogle();
+
+                  },
                   child: new Container(
-                    width: 100.0,
-                    height: 100.0,
-                  ),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+
+                      child: Padding(
+                        padding: const EdgeInsets.only(left:AppDimen.value14,right:AppDimen.value14 ),
+                        child: Row(
+                          children: [
+                            Image.asset("assets/images/social/facebook.png",height: 30,width: 30,),
+                            SizedBox(width:70,),
+                            Align(alignment: Alignment.center,child: Text(AppString.signInWithGoogle,))
+                          ],
+                        ),
+                      )),
                 ),
                 color: Colors.transparent,
               ),
-              color: Colors.orange,
+
             ),
           ),
+
+
+          //
+
+
+
+
 
 
 

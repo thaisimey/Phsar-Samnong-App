@@ -39,6 +39,10 @@ dependencies:
   photo_view: ^0.10.3
   connectivity: ^2.0.2
   flushbar: ^1.10.4
+  google_sign_in: ^4.5.3
+  firebase_core: "^0.5.3"
+  firebase_auth: "^0.18.0"
+  firebase_database: ^4.4.0
 
 dev_dependencies:
   flutter_test:

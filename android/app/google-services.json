@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "126179701392",
+    "project_id": "phsar-samnong-28137",
+    "storage_bucket": "phsar-samnong-28137.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126179701392:android:467685ecd74fd993d25e15",
+        "android_client_info": {
+          "package_name": "com.example.phsar_samnong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126179701392-2jjkpejv120cgopucsh6e8055hb9t6ju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.phsar_samnong",
+            "certificate_hash": "503803a1dd17ed56c4c7049b693a4c727bd09241"
+          }
+        },
+        {
+          "client_id": "126179701392-1dffg67r4ppgnf9k78o0690h0ifn7tnl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPkGRb_HAGBnzB2nbQVqx1xyOcvQOOZB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126179701392-1dffg67r4ppgnf9k78o0690h0ifn7tnl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

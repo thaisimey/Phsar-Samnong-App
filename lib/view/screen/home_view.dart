@@ -30,6 +30,7 @@ class _HomeViewState extends State<HomeView>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.0,
         title: Row(
           children: [
             Image.asset(
@@ -65,7 +66,7 @@ class _HomeViewState extends State<HomeView>
               height: 40,
               width: 40,
               child: InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SearchView()));
                   },

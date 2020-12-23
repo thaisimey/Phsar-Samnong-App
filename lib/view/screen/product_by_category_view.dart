@@ -97,7 +97,7 @@ class _ProductByCategoriesState extends State<ProductByCategoriesView> {
                                 mainAxisSpacing: 10.0),
                             itemBuilder: (context, position) {
                               var item = itemList[position];
-                              return ComponentPro.movieGridItem(item, context);
+                              return ComponentPro.movieItem(item, context);
                             });
                       } else {
                         return Center(

@@ -58,5 +58,6 @@ class AppDimen {
   static const double value114 = 114;
   static const double value116 = 116;
   static const double value118 = 118;
+  static const double radiusOfRipple = 10;
 
 }

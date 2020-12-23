@@ -20,6 +20,7 @@ class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAli
 
   int page = 1;
   List<Item> itemList = List();
+  ScrollController _scrollController = new ScrollController();
 
 
   @override
@@ -34,8 +35,8 @@ class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAli
 
   Future<List<Item>> getItem(BuildContext context) async {
     // WidgetsBinding.instance.addPostFrameCallback((_) async{
-      itemList = await Provider.of<ProductViewModel>(context, listen: false).getProducts(widget.catID, page);
-      print("itemList result ${itemList.length}");
+    itemList = await Provider.of<ProductViewModel>(context, listen: false).getProducts(widget.catID, page);
+    print("itemList result ${itemList.length}");
 
     // });
     return Future.value(itemList);
@@ -55,7 +56,7 @@ class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAli
                       builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                         if(snapshot.data != null && !snapshot.hasError) {
                           return ListView.builder(
-                            // controller: _scrollController,
+                            controller: _scrollController,
                               itemCount: snapshot.data.length,
                               scrollDirection: Axis.horizontal,
                               addAutomaticKeepAlives: true,
@@ -80,7 +81,13 @@ class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAli
                       color: Colors.black.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          _scrollController.animateTo(
+                            _scrollController.position.maxScrollExtent,
+                            duration: Duration(seconds: 1),
+                            curve: Curves.fastOutSlowIn,
+                          );
+                        },
                         child: Container(
                             height: 30,
                             width: 30,
@@ -114,4 +121,3 @@ class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAli
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
-
