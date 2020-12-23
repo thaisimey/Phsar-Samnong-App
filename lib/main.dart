@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
           splashColor: Colors.grey.withOpacity(0.5),
       ),
       themeMode: ThemeMode.system,
-      home: TestView(),
+      home: HomeView(),
     );
   }
 }
