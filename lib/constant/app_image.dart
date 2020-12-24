@@ -10,5 +10,8 @@ class AppImage {
   static String uk = "assets/images/icon/uk_chinese.png";
   static String chinese = "assets/images/icon/chinese_medium.png";
   static String logoMedium = "assets/images/logo/logo_medium.png";
-  static String noData = "assets/images/logo/no_data.png";
+  static String noData = "assets/images/icon/no_data.png";
+  static String facebook = "assets/images/icon/facebook.png";
+  static String eye = "assets/images/icon/eyes.png";
+  static String account = "assets/images/icon/account.png";
 }

@@ -10,7 +10,7 @@ import '../view/screen/categories_view.dart';
 class ComponentPro {
   static Widget movieItem(Item item, BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: AppDimen.value2,right: AppDimen.value2,bottom: AppDimen.value4),
+      margin: EdgeInsets.only(left: AppDimen.value4,right: AppDimen.value4,bottom: AppDimen.value4),
       decoration: BoxDecoration(
           color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(AppDimen.radiusOfRipple)),
@@ -89,65 +89,127 @@ class ComponentPro {
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 5,
+            spreadRadius: 2,
             blurRadius: 10,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: Offset(0, 24), // changes position of shadow
           ),
         ],
       ),
       child: Row(
         children: [
-          InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CategoriesView()));
-            },
-            child: Container(
-              height: 16,
-              width: MediaQuery.of(context).size.width/4.5,
-              child: Image.asset(AppImage.menu),
+          Container(
+            decoration: BoxDecoration(
+              // color: Colors.greenAccent
             ),
+            child: new Material(
+              child: new InkResponse(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CategoriesView()),
+                  );
+                },
+                child: new Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width/4.5,
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(AppImage.menu,height: 20,width: 20,),
+
+                      ],
+                    )),
+              ),
+              color: Colors.transparent,
+            ),
+
           ),
+
           Container(
             width: MediaQuery.of(context).size.width/30,
-            height: 16,
+            height: 40,
             child: VerticalDivider(thickness: 0.5,),
           ),
 
-          InkWell(
-            onTap: () {},
-            child: Container(
-              height: 16,
-              width: MediaQuery.of(context).size.width/4.5,
-              // color: Colors.red,
-              child: Image.asset(AppImage.fav),
+          Container(
+            child: new Material(
+              child: new InkResponse(
+                onTap: () {
+                },
+                child: new Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width/4.5,
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(AppImage.fav,height: 20,width: 20,),
+
+                      ],
+                    )),
+              ),
+              color: Colors.transparent,
             ),
+
           ),
           Container(
             width: MediaQuery.of(context).size.width/30,
             height: 40,
             child: VerticalDivider(thickness: 0.5,),
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              height: 16,
-              width: MediaQuery.of(context).size.width/4.5,
-
-              child: Image.asset(AppImage.chat),
+          Container(
+            decoration: BoxDecoration(
+              // color: Colors.greenAccent
             ),
+            child: new Material(
+              child: new InkResponse(
+                onTap: () {
+                },
+                child: new Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width/4.5,
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(AppImage.chat,height: 20,width: 20,),
+
+                      ],
+                    )),
+              ),
+              color: Colors.transparent,
+            ),
+
           ),
           Container(
             width: MediaQuery.of(context).size.width/30,
             height: 40,
             child: VerticalDivider(thickness: 0.5,),
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              height: 16,
-              width: MediaQuery.of(context).size.width/4.5,
-              child: Image.asset(AppImage.po),
+          Container(
+            decoration: BoxDecoration(
+              // color: Colors.greenAccent
             ),
+            child: new Material(
+              child: new InkResponse(
+                onTap: () {
+                },
+                child: new Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width/4.5,
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(AppImage.po,height: 20,width: 20,),
+
+                      ],
+                    )),
+              ),
+              color: Colors.transparent,
+            ),
+
           ),
 
         ],

@@ -103,7 +103,8 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                                       .only(
                                                       left: AppDimen.value10,
                                                       right: AppDimen.value10,
-                                                      bottom: AppDimen.value8),
+                                                      bottom: AppDimen.value8,
+                                                      top: AppDimen.value8 ),
                                                   child: Row(
                                                     children: [
                                                       Text(
@@ -142,9 +143,12 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                                     ],
                                                   ),
                                                 ),
-                                                ProductItemView(
-                                                  catID: value
-                                                      .catList[position].id,
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: AppDimen.value20),
+                                                  child: ProductItemView(
+                                                    catID: value
+                                                        .catList[position].id,
+                                                  ),
                                                 )
                                               ],
                                             );

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:phsar_samnong/component/component_pro.dart';
+import 'package:phsar_samnong/constant/app_image.dart';
 import 'package:phsar_samnong/model/product/item.dart';
 import 'package:phsar_samnong/view_model/product_view_model.dart';
 import 'package:provider/provider.dart';
@@ -75,30 +76,38 @@ class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAli
 
                       }),
                   Positioned(
-                    bottom: 60,
+                    bottom: 30,
                     right: 5,
                     child: Material(
-                      color: Colors.black.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                      child: InkWell(
-                        onTap: () {
-                          _scrollController.animateTo(
-                            _scrollController.position.maxScrollExtent,
-                            duration: Duration(seconds: 1),
-                            curve: Curves.fastOutSlowIn,
-                          );
-                        },
-                        child: Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.black.withOpacity(0.2),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Icon(Icons.arrow_forward_ios_rounded,size: 14,color:Colors.black),
-                            )),
+                      color: Colors.transparent,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 60),
+                        // color: Colors.red,
+                        height: 80,
+                        width: 60,
+
+                        child: Center(
+                          child: InkResponse(
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () {
+                              _scrollController.animateTo(
+                                _scrollController.position.maxScrollExtent,
+                                duration: Duration(seconds: 1),
+                                curve: Curves.fastOutSlowIn,
+                              );
+                            },
+                            child: Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.black.withOpacity(0.2),
+                                ),
+                                child: Icon(Icons.arrow_forward_ios_rounded,size: 14,)),
+                          ),
+                        ),
                       ),
                     ),
                   ),

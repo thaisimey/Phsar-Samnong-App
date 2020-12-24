@@ -6,6 +6,8 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/app_image.dart';
@@ -160,14 +162,29 @@ class _DetailViewState extends State<DetailView> {
                 ),
               ),
               Spacer(),
-              InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => SearchView()));
-                  },
-                  child: Image.asset(AppImage.search))
+              Material(
+                color: Colors.transparent,
+                child: Container(
+                  // color: Colors.red,
+                  height: 80,
+                  width: 80,
+
+                  child: Center(
+                    child: InkResponse(
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SearchView()));
+                      },
+                      child: Container(
+                          height: 20,
+                          width: 20,
+                          child: Image(image: AssetImage(AppImage.search),)),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -295,7 +312,7 @@ class _DetailViewState extends State<DetailView> {
                                               right: AppDimen.value4),
                                           child: Image(
                                             image: AssetImage(
-                                                "assets/images/social/facebook.png"),
+                                                AppImage.facebook),
                                             height: 20,
                                             width: 20,
                                           ),
@@ -312,7 +329,7 @@ class _DetailViewState extends State<DetailView> {
                                               right: AppDimen.value4),
                                           child: Image(
                                             image: AssetImage(
-                                                "assets/images/social/eyes.png"),
+                                                AppImage.eye,),
                                             height: 24,
                                             width: 24,
                                           ),
@@ -368,27 +385,36 @@ class _DetailViewState extends State<DetailView> {
                                         scrollDirection: Axis.horizontal,
                                         itemCount: gallery.length,
                                         itemBuilder: (context, position) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(18),
-                                            child: Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    2,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    3,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(8)),
-                                                  color: Colors.white,
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        "${Constant.baseURL}/${gallery[position]}"),
-                                                  ),
-                                                )),
+                                          return InkWell(
+                                            onTap: () {
+                                              return Container(
+                                                  child: PhotoView(
+                                                    imageProvider: AssetImage(AppImage.noData),
+                                                  )
+                                              );
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(18),
+                                              child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      3,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(8)),
+                                                    color: Colors.white,
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          "${Constant.baseURL}/${gallery[position]}"),
+                                                    ),
+                                                  )),
+                                            ),
                                           );
                                         }),
                                   ),

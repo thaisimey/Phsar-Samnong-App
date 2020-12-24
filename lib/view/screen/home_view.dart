@@ -30,53 +30,7 @@ class _HomeViewState extends State<HomeView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        title: Row(
-          children: [
-            Container(
-              height: 80,
-                width: 100,
-                // color: Colors.grey,
-                child: Image(image: AssetImage(AppImage.logoMedium),)),
-            SizedBox(
-              width: 15,
-            ),
-            Image.asset(
-              AppImage.khmer,
-              height: 36,
-              width: 40,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: AppDimen.value2),
-              child: Image.asset(
-                AppImage.chinese,
-                height: 100,
-                width: 40,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: AppDimen.value2),
-              child: Image.asset(
-                AppImage.uk,
-                height: 100,
-                width: 40,
-              ),
-            ),
-            Spacer(),
-            Container(
-              height: 26,
-              width: 26,
-              child: InkWell(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SearchView()));
-                  },
-                  child: Image.asset(AppImage.search)),
-            )
-          ],
-        ),
-      ),
+      appBar: CustomSearchBar(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (int i) {
           setState(() {
@@ -126,4 +80,83 @@ class _HomeViewState extends State<HomeView>
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
+
+}
+
+class CustomSearchBar extends StatelessWidget with PreferredSizeWidget {
+  String keyword = "";
+  int page = 1;
+  int limit;
+  var _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.only(left: 20),
+        child: Row(
+          children: [
+            Container(
+                height: 80,
+                width: 100,
+                // color: Colors.grey,
+                child: Image(image: AssetImage(AppImage.logoMedium),)),
+            SizedBox(
+              width: 15,
+            ),
+            Image.asset(
+              AppImage.khmer,
+              height: 36,
+              width: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: AppDimen.value2),
+              child: Image.asset(
+                AppImage.chinese,
+                height: 100,
+                width: 40,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: AppDimen.value2),
+              child: Image.asset(
+                AppImage.uk,
+                height: 100,
+                width: 40,
+              ),
+            ),
+            Spacer(),
+            Material(
+              color: Colors.transparent,
+              child: Container(
+                // color: Colors.red,
+                height: 80,
+                width: 80,
+
+                child: Center(
+                  child: InkResponse(
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SearchView()));
+                    },
+                    child: Container(
+                        height: 20,
+                        width: 20,
+                        child: Image(image: AssetImage(AppImage.search),)),
+                  ),
+                ),
+              ),
+            )
+
+          ],
+        ),
+      ),
+    );
+  }
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
