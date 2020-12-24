@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
+import 'package:phsar_samnong/constant/app_image.dart';
 import 'package:phsar_samnong/constant/const.dart';
 import 'package:phsar_samnong/model/product/item.dart';
 import 'package:phsar_samnong/view/screen/detail_view.dart';
@@ -9,7 +10,7 @@ import '../view/screen/categories_view.dart';
 class ComponentPro {
   static Widget movieItem(Item item, BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: AppDimen.value2,right: AppDimen.value2,bottom: 1),
+      margin: EdgeInsets.only(left: AppDimen.value2,right: AppDimen.value2,bottom: AppDimen.value4),
       decoration: BoxDecoration(
           color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(AppDimen.radiusOfRipple)),
@@ -46,8 +47,8 @@ class ComponentPro {
                     ),
                   ),
 
-                  placeholder: (context, url) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey),
-                  errorWidget: (context, url, error) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey,),
+                  placeholder: (context, url) => Image.asset(AppImage.logoMedium,color: Colors.grey),
+                  errorWidget: (context, url, error) => Image.asset(AppImage.logoMedium,color: Colors.grey,),
                 ),
               ),
               Text(
@@ -101,24 +102,24 @@ class ComponentPro {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CategoriesView()));
             },
             child: Container(
-              height: 50,
+              height: 16,
               width: MediaQuery.of(context).size.width/4.5,
-              child: Image.asset("assets/images/home/icon/menu.png"),
+              child: Image.asset(AppImage.menu),
             ),
           ),
           Container(
             width: MediaQuery.of(context).size.width/30,
-            height: 40,
+            height: 16,
             child: VerticalDivider(thickness: 0.5,),
           ),
 
           InkWell(
             onTap: () {},
             child: Container(
-              height: 50,
+              height: 16,
               width: MediaQuery.of(context).size.width/4.5,
               // color: Colors.red,
-              child: Image.asset("assets/images/home/icon/fav.png"),
+              child: Image.asset(AppImage.fav),
             ),
           ),
           Container(
@@ -129,10 +130,10 @@ class ComponentPro {
           InkWell(
             onTap: () {},
             child: Container(
-              height: 50,
+              height: 16,
               width: MediaQuery.of(context).size.width/4.5,
 
-              child: Image.asset("assets/images/home/icon/chat.png"),
+              child: Image.asset(AppImage.chat),
             ),
           ),
           Container(
@@ -143,9 +144,9 @@ class ComponentPro {
           InkWell(
             onTap: () {},
             child: Container(
-              height: 50,
+              height: 16,
               width: MediaQuery.of(context).size.width/4.5,
-              child: Image.asset("assets/images/home/icon/po.png"),
+              child: Image.asset(AppImage.po),
             ),
           ),
 
@@ -189,8 +190,8 @@ class ComponentPro {
                           image: imageProvider),
                     ),
                   ),
-                  placeholder: (context, url) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey),
-                  errorWidget: (context, url, error) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey,),
+                  placeholder: (context, url) => Image.asset(AppImage.logoMedium,color: Colors.grey),
+                  errorWidget: (context, url, error) => Image.asset(AppImage.logoMedium,color: Colors.grey,),
                 ),
               ),
               Padding(

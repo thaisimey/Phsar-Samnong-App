@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
+import 'package:phsar_samnong/constant/app_image.dart';
 import 'package:phsar_samnong/constant/const.dart';
 import 'package:phsar_samnong/model/product/item.dart';
 import 'package:phsar_samnong/model/view_state.dart';
@@ -220,7 +221,7 @@ class _SearchViewState extends State<SearchView> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.asset("assets/images/home/icon/nodata.png",height: 40,width: 40,),
+                                      Image.asset(AppImage.noData,height: 40,width: 40,),
                                       Padding(
                                         padding: const EdgeInsets.only(top: AppDimen.value8),
                                         child: Text("no data",style: TextStyle(color: Colors.grey),),

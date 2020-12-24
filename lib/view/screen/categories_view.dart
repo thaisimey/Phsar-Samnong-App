@@ -5,6 +5,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
+import 'package:phsar_samnong/constant/app_image.dart';
 import 'package:phsar_samnong/constant/const.dart';
 import 'package:phsar_samnong/model/view_state.dart';
 import 'package:phsar_samnong/view/screen/product_by_category_view.dart';
@@ -128,8 +129,8 @@ class _CategoriesViewState extends State<CategoriesView> {
                                                               ),
                                                             ),
 
-                                                            placeholder: (context, url) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey),
-                                                            errorWidget: (context, url, error) => Image.asset('assets/images/home/logo/logo.png',color: Colors.grey,),
+                                                            placeholder: (context, url) => Image.asset(AppImage.logoMedium,color: Colors.grey),
+                                                            errorWidget: (context, url, error) => Image.asset(AppImage.logoMedium,color: Colors.grey,),
                                                           ),
                                                         ),
                                                         Column(

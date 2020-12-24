@@ -6,9 +6,9 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:phsar_samnong/component/component_pro.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
+import 'package:phsar_samnong/constant/app_image.dart';
 import 'package:phsar_samnong/constant/const.dart';
 import 'package:phsar_samnong/model/detail/detail.dart';
 import 'package:phsar_samnong/repository/api_service.dart';
@@ -16,7 +16,6 @@ import 'package:phsar_samnong/view/screen/related_product_view.dart';
 import 'package:phsar_samnong/view/screen/search_view.dart';
 
 import '../../constant/app_dimen.dart';
-import '../../model/product/item.dart';
 import '../../repository/api_service.dart';
 
 class DetailView extends StatefulWidget {
@@ -50,6 +49,8 @@ class _DetailViewState extends State<DetailView> {
 
   var page;
   StreamSubscription subscription;
+
+
 
   @override
   void initState() {
@@ -118,6 +119,7 @@ class _DetailViewState extends State<DetailView> {
     });
   }
 
+
   // Future<List<Detail>> getDetail(BuildContext context) async {
   //   // WidgetsBinding.instance.addPostFrameCallback((_) async{
   //   detailList.add(await Provider.of<ProductDetailViewModel>(context, listen: false).getDetail(productID));
@@ -133,27 +135,27 @@ class _DetailViewState extends State<DetailView> {
           title: Row(
             children: [
               Image.asset(
-                "assets/images/home/logo/logo@3x.png",
+                AppImage.logoMedium,
                 width: 80,
               ),
               SizedBox(
                 width: 15,
               ),
               Image.asset(
-                "assets/images/home/flag/khmer@3x.png",
+                AppImage.khmer,
                 width: 25,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: AppDimen.value2),
                 child: Image.asset(
-                  "assets/images/home/flag/chinese@3x.png",
+                  AppImage.chinese,
                   width: 25,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: AppDimen.value2),
                 child: Image.asset(
-                  "assets/images/home/flag/united-kingdom@3x.png",
+                  AppImage.uk,
                   width: 25,
                 ),
               ),
@@ -165,7 +167,7 @@ class _DetailViewState extends State<DetailView> {
                         MaterialPageRoute(
                             builder: (BuildContext context) => SearchView()));
                   },
-                  child: Image.asset("assets/images/home/icon/search.png"))
+                  child: Image.asset(AppImage.search))
             ],
           ),
         ),
@@ -590,7 +592,7 @@ class _DetailViewState extends State<DetailView> {
                               );
                             }),
                       ),
-                      RelatedProductView(id)
+                      RelatedProductView(id),
                     ],
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
+import 'package:phsar_samnong/constant/app_image.dart';
 import 'package:phsar_samnong/view/nav_bottom/account_screen_view.dart';
 import 'package:phsar_samnong/view/nav_bottom/brand_screen_view.dart';
 import 'package:phsar_samnong/view/nav_bottom/home_screen_view.dart';
@@ -33,22 +34,23 @@ class _HomeViewState extends State<HomeView>
         elevation: 0.0,
         title: Row(
           children: [
-            Image.asset(
-              "assets/images/home/logo/logo@3x.png",
-              width: 110,
-            ),
+            Container(
+              height: 80,
+                width: 100,
+                // color: Colors.grey,
+                child: Image(image: AssetImage(AppImage.logoMedium),)),
             SizedBox(
               width: 15,
             ),
             Image.asset(
-              "assets/images/home/flag/khmer@3x.png",
-              height: 100,
+              AppImage.khmer,
+              height: 36,
               width: 40,
             ),
             Padding(
               padding: const EdgeInsets.only(left: AppDimen.value2),
               child: Image.asset(
-                "assets/images/home/flag/chinese@3x.png",
+                AppImage.chinese,
                 height: 100,
                 width: 40,
               ),
@@ -56,21 +58,21 @@ class _HomeViewState extends State<HomeView>
             Padding(
               padding: const EdgeInsets.only(left: AppDimen.value2),
               child: Image.asset(
-                "assets/images/home/flag/united-kingdom@3x.png",
+                AppImage.uk,
                 height: 100,
                 width: 40,
               ),
             ),
             Spacer(),
             Container(
-              height: 40,
-              width: 40,
+              height: 26,
+              width: 26,
               child: InkWell(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SearchView()));
                   },
-                  child: Image.asset("assets/images/home/icon/search.png")),
+                  child: Image.asset(AppImage.search)),
             )
           ],
         ),

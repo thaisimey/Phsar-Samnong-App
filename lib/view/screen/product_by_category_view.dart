@@ -40,7 +40,7 @@ class _ProductByCategoriesState extends State<ProductByCategoriesView> {
         title: Row(
           children: [
             Image.asset(
-              "assets/images/home/logo/logo@3x.png",
+              "assets/images/home/logo/logo_medium.png",
               width: 80,
             ),
             SizedBox(
@@ -54,14 +54,14 @@ class _ProductByCategoriesState extends State<ProductByCategoriesView> {
             Padding(
               padding: const EdgeInsets.only(left: AppDimen.value2),
               child: Image.asset(
-                "assets/images/home/flag/chinese@3x.png",
+                "assets/images/home/flag/chinese_medium.png",
                 width: 25,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: AppDimen.value2),
               child: Image.asset(
-                "assets/images/home/flag/united-kingdom@3x.png",
+                "assets/images/home/flag/uk_medium.png",
                 width: 25,
               ),
             ),

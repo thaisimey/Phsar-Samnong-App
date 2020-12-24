@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/app_font_size.dart';
+import 'package:phsar_samnong/constant/app_image.dart';
 import 'package:phsar_samnong/constant/app_string.dart';
 
 class AccountScreenView extends StatefulWidget {
@@ -139,7 +140,7 @@ class _AccountScreenViewState extends State<AccountScreenView> {
                         padding: const EdgeInsets.only(left:AppDimen.value14,right:AppDimen.value14 ),
                         child: Row(
                           children: [
-                            Image.asset("assets/images/social/facebook.png",height: 30,width: 30,),
+                            Image.asset(AppImage.google,height: 26,width: 26,),
                             SizedBox(width:70,),
                             Align(alignment: Alignment.center,child: Text(AppString.signInWithGoogle,))
                           ],
@@ -151,6 +152,7 @@ class _AccountScreenViewState extends State<AccountScreenView> {
 
             ),
           ),
+
 
 
         ],
