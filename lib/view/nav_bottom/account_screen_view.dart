@@ -17,6 +17,7 @@ class _AccountScreenViewState extends State<AccountScreenView> {
 
   bool isLoggedIn = false;
   String username = "";
+  String email = "";
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -35,6 +36,7 @@ class _AccountScreenViewState extends State<AccountScreenView> {
     FirebaseAuth.instance.signInWithCredential(credential).then((value) {
       setState(() {
         username = value.user.displayName;
+        email = value.user.email;
       });
       print('auth cre ${value.user.toString()}');
     });
@@ -220,10 +222,11 @@ class _AccountScreenViewState extends State<AccountScreenView> {
                       Padding(
                         padding: const EdgeInsets.only(left: AppDimen.value10),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(username,style: TextStyle(fontWeight: FontWeight.bold,fontSize: AppFontSize.value20),),
-                            Text("phone number"),
-                            Text("+85542424432"),
+                            Text("Email : "),
+                            Text(email),
                           ],
                         ),
                       )
