@@ -56,6 +56,11 @@ class _AccountScreenViewState extends State<AccountScreenView> {
     } else {
       isLoggedIn = false;
     }
+
+    if(_auth.currentUser.email != null) {
+      username = _auth.currentUser.displayName;
+      email = _auth.currentUser.email;
+    }
   }
 
   String inputData() {
