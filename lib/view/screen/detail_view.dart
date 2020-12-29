@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:phsar_samnong/constant/app_color.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/app_image.dart';

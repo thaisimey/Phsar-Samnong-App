@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ class AccountScreenView extends StatefulWidget {
 }
 
 class _AccountScreenViewState extends State<AccountScreenView> {
+
 
   bool isLoggedIn = false;
   String username = "";
@@ -47,10 +47,12 @@ class _AccountScreenViewState extends State<AccountScreenView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn  = GoogleSignIn();
 
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     if(inputData() == null) {
       isLoggedIn = true;
     } else {
@@ -146,7 +148,7 @@ class _AccountScreenViewState extends State<AccountScreenView> {
                     padding: const EdgeInsets.only(left:AppDimen.value14,right:AppDimen.value14 ),
                     child: Row(
                       children: [
-                        Image.asset("assets/images/social/facebook.png",height: 30,width: 30,),
+                        GestureDetector(onTap: () {},child: Image.asset("assets/images/social/facebook.png",height: 30,width: 30,)),
                         SizedBox(width: AppDimen.value70,),
                         Align(alignment: Alignment.center,child: Text(AppString.signInWithFacebook,))
                       ],
@@ -168,7 +170,7 @@ class _AccountScreenViewState extends State<AccountScreenView> {
               child: new Material(
                 child: new InkWell(
                   onTap: () async {
-                    await signInWithGoogle();
+                    // await signInWithGoogle();
                     setState(() {
                       isLoggedIn = false;
                     });
@@ -348,6 +350,7 @@ class _AccountScreenViewState extends State<AccountScreenView> {
               ],
             )
           );
+
 
   }
 }

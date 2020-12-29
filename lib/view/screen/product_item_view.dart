@@ -17,6 +17,8 @@ class ProductItemView extends StatefulWidget {
 
 class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAliveClientMixin {
 
+  Future<List<Item>> loadItem;
+
   StreamController<List<Item>> stream = StreamController();
 
   int page = 1;
@@ -28,6 +30,7 @@ class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAli
   void initState() {
     // TODO: implement initState
     super.initState();
+    loadItem = getItem(context);
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
     //   itemList = await Provider.of<ProductViewModel>(context, listen: false).getProducts(widget.catID, page);
     //   stream.add(itemList);
@@ -53,7 +56,7 @@ class _ProductItemViewState extends State<ProductItemView> with AutomaticKeepAli
               return Stack(
                 children: [
                   FutureBuilder<List<Item>>(
-                      future: getItem(context),
+                      future: loadItem,
                       builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                         if(snapshot.data != null && !snapshot.hasError) {
                           return ListView.builder(

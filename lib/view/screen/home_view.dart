@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/app_image.dart';
-import 'file:///E:/Simey/Phsar-Samnong-App/lib/view/nav_bottom/account/account_screen_view.dart';
+import 'package:phsar_samnong/view/nav_bottom/account/account_screen_view.dart';
 import 'package:phsar_samnong/view/nav_bottom/brand_screen_view.dart';
 import 'package:phsar_samnong/view/nav_bottom/home_screen_view.dart';
 import 'package:phsar_samnong/view/screen/search_view.dart';
+import 'package:phsar_samnong/view/test_view.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _HomeViewState extends State<HomeView>
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreenView(),
     BrandScreenView(),
-    AccountScreenView(),
+    TestView(),
   ];
 
   @override
