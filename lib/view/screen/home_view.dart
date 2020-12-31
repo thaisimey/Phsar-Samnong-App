@@ -1,11 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:phsar_samnong/constant/app_dimen.dart';
 import 'package:phsar_samnong/constant/app_image.dart';
-import 'package:phsar_samnong/view/nav_bottom/account/account_screen_view.dart';
+import 'package:phsar_samnong/repository/user_authen.dart';
+import 'package:phsar_samnong/view/nav_bottom/account/account_view.dart';
+import 'package:phsar_samnong/view/nav_bottom/account/login_view.dart';
+import 'package:phsar_samnong/view/nav_bottom/account/splash_screen.dart';
 import 'package:phsar_samnong/view/nav_bottom/brand_screen_view.dart';
 import 'package:phsar_samnong/view/nav_bottom/home_screen_view.dart';
 import 'package:phsar_samnong/view/screen/search_view.dart';
-import 'package:phsar_samnong/view/test_view.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -15,18 +18,35 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
   int curIndex = 0;
+  bool isLoggedIn = false;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeScreenView(),
-    BrandScreenView(),
-    TestView(),
-  ];
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    setState(() {
+      getCurrentUser().then((user) {
+        if(user != null) {
+          print("acc");
+          _widgetOptions[2] = AccountView(user);
+        } else {
+          print("login");
+          _widgetOptions[2] = LoginView();
+        }
+      });
+    });
+
+
   }
+
+  static List<Widget> _widgetOptions = <Widget>[
+    HomeScreenView(),
+    BrandScreenView(),
+    LoginView()
+  ];
+
 
   @override
   Widget build(BuildContext context) {

@@ -132,61 +132,6 @@ class _DetailViewState extends State<DetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Image.asset(
-                AppImage.logoMedium,
-                width: 80,
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Image.asset(
-                AppImage.khmer,
-                width: 25,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: AppDimen.value2),
-                child: Image.asset(
-                  AppImage.chinese,
-                  width: 25,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: AppDimen.value2),
-                child: Image.asset(
-                  AppImage.uk,
-                  width: 25,
-                ),
-              ),
-              Spacer(),
-              Material(
-                color: Colors.transparent,
-                child: Container(
-                  // color: Colors.red,
-                  height: 80,
-                  width: 80,
-
-                  child: Center(
-                    child: InkResponse(
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SearchView()));
-                      },
-                      child: Container(
-                          height: 20,
-                          width: 20,
-                          child: Image(image: AssetImage(AppImage.search),)),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
         body: (title == null)
             ? Center(
                 child: CircularProgressIndicator(

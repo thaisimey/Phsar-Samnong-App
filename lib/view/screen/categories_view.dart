@@ -54,20 +54,6 @@ class _CategoriesViewState extends State<CategoriesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              "CATEGORIES",
-            ),
-            Spacer(),
-            InkWell(
-              onTap: () {},
-                child: Icon(Icons.close))
-          ],
-        ),
-      ),
       body: Container(
           child : Stack(
             children: [
